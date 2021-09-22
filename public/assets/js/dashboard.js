@@ -35,7 +35,7 @@
       );
     }
   })
-  .fail(function( jqXHR, textStatus ) {
+  .fail(function(jqXHR, textStatus) {
     $("#table-data tbody").append(
       '<tr>' +
         '<td colspan="5" text="center">Data not available</td>' +
@@ -53,7 +53,7 @@
       .done(function(msg) {
         window.location.reload();
       })
-      .fail(function( jqXHR, textStatus ) {
+      .fail(function(jqXHR, textStatus) {
         alert('An error occured, please try again!');
         console.log('delete-error-xhr', jqXHR);
         console.log('delete-error', textStatus);
@@ -82,40 +82,48 @@
   });
 
   $('#add-button').on('click', function() {
-    $.ajax({
-      url: '/products',
-      method: 'POST',
-      data: { 
-        name: $('#name').val(),
-        price: $('#price').val()
-      }
-    })
-    .done(function(msg) {
-      window.location.reload();
-    })
-    .fail(function( jqXHR, textStatus ) {
-      alert('An error occured, please try again!');
-      console.log('add-error-xhr', jqXHR);
-      console.log('add-error', textStatus);
-    });
+    let name  = $('#name').val();
+    let price = $('#price').val();
+
+    if (name && price) {
+      $.ajax({
+        url: '/products',
+        method: 'POST',
+        data: { name, price }
+      })
+      .done(function(msg) {
+        window.location.reload();
+      })
+      .fail(function(jqXHR, textStatus) {
+        alert('An error occured, please try again!');
+        console.log('add-error-xhr', jqXHR);
+        console.log('add-error', textStatus);
+      });
+    } else {
+      alert('Please enter name and price!');
+    }
   });
 
   $('#edit-button').on('click', function() {
-    $.ajax({
-      url: '/products/' + $('#edit-id').val(),
-      method: 'POST',
-      data: { 
-        name: $('#edit-name').val(),
-        price: $('#edit-price').val()
-      }
-    })
-    .done(function(msg) {
-      window.location.reload();
-    })
-    .fail(function( jqXHR, textStatus ) {
-      alert('An error occured, please try again!');
-      console.log('add-error-xhr', jqXHR);
-      console.log('add-error', textStatus);
-    });
+    let name  = $('#edit-name').val();
+    let price = $('#edit-price').val();
+
+    if (name && price) {
+      $.ajax({
+        url: '/products/' + $('#edit-id').val(),
+        method: 'POST',
+        data: { name , price }
+      })
+      .done(function(msg) {
+        window.location.reload();
+      })
+      .fail(function(jqXHR, textStatus) {
+        alert('An error occured, please try again!');
+        console.log('add-error-xhr', jqXHR);
+        console.log('add-error', textStatus);
+      });
+    } else {
+      alert('Please enter name and price!');
+    }
   });
 })(jQuery);
