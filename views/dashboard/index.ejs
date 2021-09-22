@@ -20,7 +20,7 @@
           <li class="nav-item">
             <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="false">Add</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item edit-nav" style="display: none;">
             <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Edit</a>
           </li>
         </ul>
@@ -58,6 +58,7 @@
           <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
             <h3>Edit Data</h3>
             <form style="max-width: 35rem;" class="edit-data">
+              <input type="hidden" name="id" id="edit-id">
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="edit-name" name="name">
@@ -100,7 +101,7 @@
               '<td class="td-name">' + msg[i].name + '</td>' +
               '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
               '<td class="td-action">' +
-                '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>' +
+                '<button class="btn btn-primary mt-3 edit-button" data-id="' + msg[i].id + '">Edit</button>' +
                 '<button class="btn btn-primary mt-3 delete-button" data-id="' + msg[i].id + '">Delete</button>' +
               '</td>' +
             '</tr>'
@@ -133,6 +134,26 @@
         }
       });
 
+      $('body').on('click', '.edit-button', function() {
+        $('.edit-nav').css('display', 'block');
+        $('#edit-tab').click();
+        $('#edit-id').val($(this).data('id'));
+
+        $.ajax({
+          url: '/products/' + $(this).data('id'),
+          method: 'GET',
+        })
+        .done(function(msg) {
+          $('#edit-name').val(msg.name);
+          $('#edit-price').val(msg.price);
+        })
+        .fail(function(jqXHR, textStatus) {
+          alert('An error occured, please try again!');
+          console.log('edit-error-xhr', jqXHR);
+          console.log('edit-error', textStatus);
+        });
+      });
+
       $('#add-button').on('click', function() {
         $.ajax({
           url: '/products',
@@ -140,6 +161,25 @@
           data: { 
             name: $('#name').val(),
             price: $('#price').val()
+          }
+        })
+        .done(function(msg) {
+          window.location.reload();
+        })
+        .fail(function( jqXHR, textStatus ) {
+          alert('An error occured, please try again!');
+          console.log('add-error-xhr', jqXHR);
+          console.log('add-error', textStatus);
+        });
+      });
+
+      $('#edit-button').on('click', function() {
+        $.ajax({
+          url: '/products/' + $('#edit-id').val(),
+          method: 'POST',
+          data: { 
+            name: $('#edit-name').val(),
+            price: $('#edit-price').val()
           }
         })
         .done(function(msg) {

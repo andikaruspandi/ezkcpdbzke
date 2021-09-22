@@ -20,7 +20,7 @@ c_product.getData = (req, res) => {
 };
 
 c_product.getDataById = (req, res) => {
-  let sql = "SELECT id, name, price FROM products WHERE id = '" + req.body.id + "'";
+  let sql = "SELECT id, name, price FROM products WHERE id = '" + req.params.id + "'";
 
   $database.con.query(sql, function (err, results, fields) {
     if (err) throw err;
@@ -68,7 +68,7 @@ c_product.insert = (req, res) => {
 
 c_product.update = (req, res) => {
   let post  = {
-    id: req.body.id,
+    id: req.params.id,
     name: req.body.name, 
     price: req.body.price
   };
@@ -77,7 +77,7 @@ c_product.update = (req, res) => {
   $database.con.query(sql, [post.name, post.price, post.id], function (error, results, fields) {
     if (error) throw error;
   
-    return res.status(200).json(results[0]);
+    return res.status(200).json(results);
   });
 };
 
