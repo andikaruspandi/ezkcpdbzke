@@ -1,0 +1,151 @@
+<%- include('../modules/head') -%>
+<body class="stretched">
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper" class="clearfix">
+
+		<!-- Content
+		============================================= -->
+		<section id="content">
+      <div class="container clearfix" style="margin-top: 40px;">
+        <div class="fancy-title title-border">
+          <h3>Product</h3>
+        </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="true">Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="false">Add</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Edit</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane show active" id="data" role="tabpanel" aria-labelledby="data-tab">
+            <div class="row bottommargin-sm clearfix">
+              <table id="table-data" class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+            <h3>Add Data</h3>
+            <form style="max-width: 35rem;" class="add-data">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" name="price">
+              </div>
+              <button id="add-button" type="button" class="btn btn-primary mt-3">Add</button>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+            <h3>Edit Data</h3>
+            <form style="max-width: 35rem;" class="edit-data">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="edit-name" name="name">
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="edit-price" name="price">
+              </div>
+              <button id="edit-button" type="button" class="btn btn-primary mt-3">Edit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- #content end -->
+
+		<%- include('../modules/footer') -%>
+
+  </div><!-- #wrapper end -->
+  
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" class="icon-angle-up"></div>
+
+  <%- include('../modules/script') -%>
+  <script type="text/javascript">
+    (function($) {
+      $('#data-tab').click();
+
+      $.ajax({
+        url: '/products',
+        method: 'GET',
+        processData: false,
+        contentType: false
+      })
+      .done(function(msg) {
+        for (let i = 0; i < msg.length; i++) {
+          $("#table-data tbody").append(
+            '<tr id="td-' + msg[i].id + '">' +
+              '<td class="td-id">' + msg[i].id + '</td>' +
+              '<td class="td-name">' + msg[i].name + '</td>' +
+              '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
+              '<td>' +
+                '<a href="#" class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Edit</a>' +
+                '<a href="#" class="btn btn-primary mt-3">Delete</a>' +
+              '</td>' +
+            '</tr>'
+          );
+        }
+      })
+      .fail(function( jqXHR, textStatus ) {
+        $("#table-data tbody").append(
+          '<tr>' +
+            '<td colspan="5" text="center">Data not available</td>' +
+          '</tr>'
+        );
+      });
+
+      $('#add-button').on('click', function() {
+        $.ajax({
+          url: '/products',
+          method: 'POST',
+          data: { 
+            name: $('#name').val(),
+            price: $('#price').val()
+          }
+        })
+        .done(function(msg) {
+          for (let i = 0; i < msg.length; i++) {
+            $("#table-data tbody").append(
+              '<tr id="td-' + msg[i].id + '">' +
+                '<td class="td-id">' + msg[i].id + '</td>' +
+                '<td class="td-name">' + msg[i].name + '</td>' +
+                '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
+                '<td>' +
+                  '<a href="#" class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Edit</a>' +
+                  '<a href="#" class="btn btn-primary mt-3">Delete</a>' +
+                '</td>' +
+              '</tr>'
+            );
+          }
+        })
+        .fail(function( jqXHR, textStatus ) {
+          alert('An error occured, please try again!');
+          console.log('add-error-xhr', jqXHR);
+          console.log('add-error', textStatus);
+        });
+      });
+    })(jQuery);
+  </script>
+  </body>
+</html>
