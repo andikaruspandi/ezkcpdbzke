@@ -11,13 +11,10 @@ let { body } = require('express-validator');
 let $routes = {};
 
 $routes.init = () => {
-  //user
-  /*app.get('/', fn.loggedIn, user.index);
-  app.get('/dashboard', fn.loggedIn, user.dashboard);*/
-  
   //products
   app.get('/dashboard', fn.loggedIn, product.dashboard);
   app.get('/products', fn.loggedIn, product.getData);
+  app.get('/products/total', fn.loggedIn, product.getTotalDataByPrice);
   app.get('/products/:id', fn.loggedIn, product.getDataById);
   app.post('/products', fn.loggedIn, product.insert);
   app.post('/products/:id', fn.loggedIn, product.update);

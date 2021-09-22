@@ -74,8 +74,8 @@
     </section><!-- #content end -->
 
 		<%- include('../modules/footer') -%>
-
-  </div><!-- #wrapper end -->
+  </div>
+  <!-- #wrapper end -->
   
 	<!-- Go To Top
 	============================================= -->
@@ -99,9 +99,9 @@
               '<td class="td-id">' + msg[i].id + '</td>' +
               '<td class="td-name">' + msg[i].name + '</td>' +
               '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
-              '<td>' +
-                '<a href="#" class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Edit</a>' +
-                '<a href="#" class="btn btn-primary mt-3">Delete</a>' +
+              '<td class="td-action">' +
+                '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>' +
+                '<button class="btn btn-primary mt-3 delete-button" data-id="' + msg[i].id + '">Delete</button>' +
               '</td>' +
             '</tr>'
           );
@@ -113,6 +113,24 @@
             '<td colspan="5" text="center">Data not available</td>' +
           '</tr>'
         );
+      });
+
+      $('body').on('click', '.delete-button', function() {
+        let r = confirm("Data with ID " + $(this).data('id') + " will be deleted, are you sure to continue?");
+        if (r == true) {
+          $.ajax({
+            url: '/products/delete/' + $(this).data('id'),
+            method: 'POST',
+          })
+          .done(function(msg) {
+            window.location.reload();
+          })
+          .fail(function( jqXHR, textStatus ) {
+            alert('An error occured, please try again!');
+            console.log('delete-error-xhr', jqXHR);
+            console.log('delete-error', textStatus);
+          });
+        }
       });
 
       $('#add-button').on('click', function() {
@@ -131,9 +149,9 @@
                 '<td class="td-id">' + msg[i].id + '</td>' +
                 '<td class="td-name">' + msg[i].name + '</td>' +
                 '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
-                '<td>' +
-                  '<a href="#" class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Edit</a>' +
-                  '<a href="#" class="btn btn-primary mt-3">Delete</a>' +
+                '<td class="td-action">' +
+                  '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>' +
+                  '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Delete</button>' +
                 '</td>' +
               '</tr>'
             );

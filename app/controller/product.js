@@ -33,6 +33,20 @@ c_product.getDataById = (req, res) => {
   });
 };
 
+c_product.getTotalDataByPrice = (req, res) => {
+  let sql = "SELECT COUNT(*) as total_products FROM products WHERE price > 80000";
+
+  $database.con.query(sql, function (err, results, fields) {
+    if (err) throw err;
+
+    if (!results.length) {
+      return res.status(400).json({ errors: ['Data not available'] });
+    } else {
+      return res.status(200).json(results[0]);
+    }
+  });
+};
+
 c_product.insert = (req, res) => {
   let post  = {
     name: req.body.name, 
@@ -69,10 +83,10 @@ c_product.update = (req, res) => {
 
 c_product.delete = (req, res) => {
   let sql = 'DELETE FROM products WHERE id = ?';
-  $database.con.query(sql, [req.body.id], function (error, results, fields) {
+  $database.con.query(sql, [req.params.id], function (error, results, fields) {
     if (error) throw error;
   
-    return res.status(200).json(results[0]);
+    return res.status(200).json(results);
   });
 };
 
