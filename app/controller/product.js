@@ -20,9 +20,9 @@ c_product.getData = (req, res) => {
 };
 
 c_product.getDataById = (req, res) => {
-  let sql = "SELECT id, name, price FROM products WHERE id = '" + req.params.id + "'";
+  let sql = "SELECT id, name, price FROM products WHERE id = ?";
 
-  $database.con.query(sql, function (err, results, fields) {
+  $database.con.query(sql, [req.params.id], function (err, results, fields) {
     if (err) throw err;
 
     if (!results.length) {
@@ -53,12 +53,12 @@ c_product.insert = (req, res) => {
     price: req.body.price
   };
 
-  let sql = "INSERT INTO products (name, price) VALUES ('" + post.name + "', '" + post.price + "')";
-  $database.con.query(sql, post, function (error, results, fields) {
+  let sql = "INSERT INTO products (name, price) VALUES (?, ?)";
+  $database.con.query(sql, [post.name, post.price], function (error, results, fields) {
     if (error) throw error;
-    let sql2 = "SELECT id, name, price FROM products WHERE id = '" + results.insertId + "'";
+    let sql2 = "SELECT id, name, price FROM products WHERE id = ?";
     
-    $database.con.query(sql2, function (err, resu, f) {
+    $database.con.query(sql2, [results.insertId], function (err, resu, f) {
       if (error) throw error;
 
       return res.status(200).json(resu);
