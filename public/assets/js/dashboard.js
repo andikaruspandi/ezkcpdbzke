@@ -28,7 +28,7 @@
           '<td class="td-name">' + msg[i].name + '</td>' +
           '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
           '<td class="td-action">' +
-            '<button class="btn btn-primary mt-3 edit-button" data-id="' + msg[i].id + '">Edit</button>' +
+            '<button class="btn btn-primary mt-3 edit-button" style="margin-right: 5px;" data-id="' + msg[i].id + '">Edit</button>' +
             '<button class="btn btn-primary mt-3 delete-button" data-id="' + msg[i].id + '">Delete</button>' +
           '</td>' +
         '</tr>'
