@@ -143,19 +143,7 @@
           }
         })
         .done(function(msg) {
-          for (let i = 0; i < msg.length; i++) {
-            $("#table-data tbody").append(
-              '<tr id="td-' + msg[i].id + '">' +
-                '<td class="td-id">' + msg[i].id + '</td>' +
-                '<td class="td-name">' + msg[i].name + '</td>' +
-                '<td class="td-price"> Rp. ' + msg[i].price + '</td>' +
-                '<td class="td-action">' +
-                  '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>' +
-                  '<button class="btn btn-primary mt-3" data-id="' + msg[i].id + '">Delete</button>' +
-                '</td>' +
-              '</tr>'
-            );
-          }
+          window.location.reload();
         })
         .fail(function( jqXHR, textStatus ) {
           alert('An error occured, please try again!');
