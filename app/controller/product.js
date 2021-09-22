@@ -1,4 +1,5 @@
 let $database = require('../database');
+let { validationResult } = require('../global').validator;
 let c_product = {};
 
 c_product.dashboard = (req, res) => {
@@ -48,6 +49,11 @@ c_product.getTotalDataByPrice = (req, res) => {
 };
 
 c_product.insert = (req, res) => {
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   let post  = {
     name: req.body.name, 
     price: req.body.price
@@ -67,6 +73,11 @@ c_product.insert = (req, res) => {
 };
 
 c_product.update = (req, res) => {
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  
   let post  = {
     id: req.params.id,
     name: req.body.name, 

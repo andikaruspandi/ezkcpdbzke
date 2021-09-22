@@ -48,8 +48,6 @@ $routes.init = () => {
     }),
     auth.register
   );
-  app.get('/delete-account', fn.checkLogged, auth.deleteAccountView);
-  app.post('/delete-account', fn.checkLogged, auth.deleteAccount);
   app.get('/logout', fn.loggedIn, auth.logout);
 
   //passport
